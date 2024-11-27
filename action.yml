@@ -24,7 +24,7 @@ runs:
 
     - name: Check Inputs
       shell: bash
-      run: echo "${{ fromJSON(inputs)}}" 
+      run: echo " ${{ fromJSON(github.event.inputs) }}"
 
     - name: Run Dependency Scanner
       shell: bash
