@@ -31,14 +31,7 @@ runs:
         # Parse client payload from inputs
         client_payload=$(echo '${{ inputs.inputs_context }}' | jq -r '.client_payload')
         job_title=$(echo "$client_payload" | jq -r '.payload.job_title')
-        
         echo "Running job: $job_title"
-        
-        github_data=$(echo '${{ inputs.github_context }}')
-        ref_name=$(echo "$github_data" | jq -r '.ref_name')
-        sha=$(echo "$github_data" | jq -r '.sha')
-        repository=$(echo "$github_data" | jq -r '.repository')
-        event_name=$(echo "$github_data" | jq -r '.event_name')
         
         docker run --rm \
           -v ${{ fromJSON(inputs.github_context).workspace }}:/code \
