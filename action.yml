@@ -13,18 +13,19 @@ runs:
   using: "composite"
   steps:
     - name: Log in to the Container registry
+      shell: bash
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
         username: ${{ fromJSON(inputs.github_context).actor }}
         password: ${{ fromJSON(inputs.github_context).token }}
-      shell: bash
 
     - name: Pull scanner image
-      run: docker pull ghcr.io/caliptrasecurity/agent:main
       shell: bash
+      run: docker pull ghcr.io/caliptrasecurity/agent:main
 
     - name: Run Dependency Scanner
+      shell: bash
       id: scanner
       env:
         GITHUB_CONTEXT: ${{ inputs.github_context }}
@@ -53,4 +54,3 @@ runs:
           -e GITHUB_EVENT_NAME="$event_name" \
           -e CLIENT_PAYLOAD="$client_payload" \
           ghcr.io/caliptrasecurity/agent:main
-      shell: bash
