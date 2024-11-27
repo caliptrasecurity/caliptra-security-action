@@ -29,7 +29,7 @@ runs:
         INPUTS_CONTEXT: ${{ inputs.inputs_context }}
       run: |
         # Parse client payload from inputs
-        client_payload=$(echo '${{ inputs.inputs_context }}' | jq -r '.client_payload')
+        client_payload=$(echo '${{ inputs.client_payload_context }}' | jq -r '.client_payload')
         job_title=$(echo "$client_payload" | jq -r '.payload.job_title')
         echo "Running job: $job_title"
         
