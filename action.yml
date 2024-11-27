@@ -1,0 +1,56 @@
+name: 'Caliptra Security Scanner'
+description: 'Security scanning for repositories using Caliptra'
+
+inputs:
+  github_context:
+    description: 'GitHub context object from the workflow'
+    required: true
+  inputs_context:
+    description: 'Inputs context object from the workflow'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ fromJSON(inputs.github_context).actor }}
+        password: ${{ fromJSON(inputs.github_context).token }}
+      shell: bash
+
+    - name: Pull scanner image
+      run: docker pull ghcr.io/caliptrasecurity/agent:main
+      shell: bash
+
+    - name: Run Dependency Scanner
+      id: scanner
+      env:
+        GITHUB_CONTEXT: ${{ inputs.github_context }}
+        INPUTS_CONTEXT: ${{ inputs.inputs_context }}
+      run: |
+        # Parse client payload from inputs
+        client_payload=$(echo '${{ inputs.inputs_context }}' | jq -r '.client_payload')
+        job_title=$(echo "$client_payload" | jq -r '.payload.job_title')
+        
+        echo "Running job: $job_title"
+        
+        github_data=$(echo '${{ inputs.github_context }}')
+        ref_name=$(echo "$github_data" | jq -r '.ref_name')
+        sha=$(echo "$github_data" | jq -r '.sha')
+        repository=$(echo "$github_data" | jq -r '.repository')
+        event_name=$(echo "$github_data" | jq -r '.event_name')
+        
+        docker run --rm \
+          -v ${{ fromJSON(inputs.github_context).workspace }}:/code \
+          -e SCAN_PATH=/code \
+          -e INPUT_FAIL_ON_SEVERITY=true \
+          -e GITHUB_TOKEN=${{ fromJSON(inputs.github_context).token }} \
+          -e GITHUB_REF_NAME="$ref_name" \
+          -e GITHUB_SHA="$sha" \
+          -e GITHUB_REPOSITORY="$repository" \
+          -e GITHUB_EVENT_NAME="$event_name" \
+          -e CLIENT_PAYLOAD="$client_payload" \
+          ghcr.io/caliptrasecurity/agent:main
+      shell: bash
