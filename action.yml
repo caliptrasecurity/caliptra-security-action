@@ -8,9 +8,6 @@ inputs:
   inputs_context:
     description: 'Inputs context object from the workflow'
     required: true
-  job_title:
-    description: 'Inputs context object from the workflow'
-    required: true
 
 runs:
   using: "composite"
@@ -31,10 +28,6 @@ runs:
         GITHUB_CONTEXT: ${{ inputs.github_context }}
         INPUTS_CONTEXT: ${{ inputs.inputs_context }}
       run: |
-        # Parse client payload from inputs
-        job_title=$(echo '${{ inputs.job_title }}')
-        echo "Running job: $job_title"
-        
         docker run --rm \
           -v ${{ fromJSON(inputs.github_context).workspace }}:/code \
           -e SCAN_PATH=/code \
