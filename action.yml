@@ -28,6 +28,7 @@ runs:
         GITHUB_CONTEXT: ${{ inputs.github_context }}
         INPUTS_CONTEXT: ${{ inputs.inputs_context }}
       run: |
+        echo "${{ fromJSON(github.event.inputs.client_payload) }}"
         docker run --rm \
           -v ${{ fromJSON(inputs.github_context).workspace }}:/code \
           -e SCAN_PATH=/code \
