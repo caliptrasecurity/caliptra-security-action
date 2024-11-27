@@ -22,6 +22,10 @@ runs:
       shell: bash
       run: docker pull ghcr.io/caliptrasecurity/agent:main
 
+    - name: Check Inputs
+      shell: bash
+      run: echo "${{ fromJSON(inputs)}}" 
+
     - name: Run Dependency Scanner
       shell: bash
       env:
