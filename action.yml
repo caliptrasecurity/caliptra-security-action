@@ -8,6 +8,9 @@ inputs:
   inputs_context:
     description: 'Inputs context object from the workflow'
     required: true
+  job_title:
+    description: 'Inputs context object from the workflow'
+    required: true
 
 runs:
   using: "composite"
@@ -29,8 +32,7 @@ runs:
         INPUTS_CONTEXT: ${{ inputs.inputs_context }}
       run: |
         # Parse client payload from inputs
-        client_payload=$(echo '${{ inputs.client_payload_context }}' | jq -r '.client_payload')
-        job_title=$(echo "$client_payload" | jq -r '.payload.job_title')
+        job_title=$(echo '${{ inputs.job_title }}')
         echo "Running job: $job_title"
         
         docker run --rm \
