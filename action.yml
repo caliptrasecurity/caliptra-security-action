@@ -20,7 +20,7 @@ runs:
           
     - name: Check Inputs
       shell: bash
-      run: echo ${{ toJSON(fromJSON(inputs.github_context)) }}
+      run: echo ${{ toJSON(fromJSON(inputs.github_context).event.inputs.client_payload) }}
 
     # - name: Pull scanner image
     #   shell: bash
