@@ -24,7 +24,7 @@ runs:
 
     - name: Check Inputs
       shell: bash
-      run: echo " ${{ toJSON(inputs.github_context) }}"
+      run: echo ${{ fromJSON(inputs.github_context) }}
 
     - name: Run Dependency Scanner
       shell: bash
