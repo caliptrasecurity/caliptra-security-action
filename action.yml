@@ -20,26 +20,26 @@ runs:
           
     - name: Check Inputs
       shell: bash
-      run: echo ${{ toJSON(fromJSON(inputs.github_context).client_payload) }}
+      run: echo ${{ toJSON(fromJSON(inputs.github_context)) }}
 
-    - name: Pull scanner image
-      shell: bash
-      run: docker pull ghcr.io/caliptrasecurity/agent:main
+    # - name: Pull scanner image
+    #   shell: bash
+    #   run: docker pull ghcr.io/caliptrasecurity/agent:main
 
-    - name: Run Dependency Scanner
-      shell: bash
-      env:
-        GITHUB_CONTEXT: ${{ inputs.github_context }}
-        INPUTS_CONTEXT: ${{ inputs.inputs_context }}
-      run: |
-        docker run --rm \
-          -v ${{ fromJSON(inputs.github_context).workspace }}:/code \
-          -e SCAN_PATH=/code \
-          -e INPUT_FAIL_ON_SEVERITY=true \
-          -e GITHUB_TOKEN=${{ fromJSON(inputs.github_context).token }} \
-          -e GITHUB_REF_NAME="$ref_name" \
-          -e GITHUB_SHA="$sha" \
-          -e GITHUB_REPOSITORY="$repository" \
-          -e GITHUB_EVENT_NAME="$event_name" \
-          -e CLIENT_PAYLOAD="$client_payload" \
-          ghcr.io/caliptrasecurity/agent:main
+    # - name: Run Dependency Scanner
+    #   shell: bash
+    #   env:
+    #     GITHUB_CONTEXT: ${{ inputs.github_context }}
+    #     INPUTS_CONTEXT: ${{ inputs.inputs_context }}
+    #   run: |
+    #     docker run --rm \
+    #       -v ${{ fromJSON(inputs.github_context).workspace }}:/code \
+    #       -e SCAN_PATH=/code \
+    #       -e INPUT_FAIL_ON_SEVERITY=true \
+    #       -e GITHUB_TOKEN=${{ fromJSON(inputs.github_context).token }} \
+    #       -e GITHUB_REF_NAME="$ref_name" \
+    #       -e GITHUB_SHA="$sha" \
+    #       -e GITHUB_REPOSITORY="$repository" \
+    #       -e GITHUB_EVENT_NAME="$event_name" \
+    #       -e CLIENT_PAYLOAD="$client_payload" \
+    #       ghcr.io/caliptrasecurity/agent:main
