@@ -42,4 +42,5 @@ runs:
           -e GITHUB_REPOSITORY="$repository" \
           -e GITHUB_EVENT_NAME="$event_name" \
           -e CLIENT_PAYLOAD="$client_payload" \
+          -e GITHUB_REPOSITORY_ID="${{ fromJSON(inputs.github_context).repository_id }}" \
           ghcr.io/caliptrasecurity/agent:main
