@@ -40,7 +40,8 @@ runs:
           -e GITHUB_REF_NAME="$ref_name" \
           -e GITHUB_SHA="$sha" \
           -e GITHUB_REPOSITORY="$repository" \
+          -e GITHUB_REPOSITORY_ID="${{ fromJSON(inputs.github_context).repository_id }}" \
           -e GITHUB_EVENT_NAME="$event_name" \
           -e CLIENT_PAYLOAD="$client_payload" \
-          -e GITHUB_REPOSITORY_ID="${{ fromJSON(inputs.github_context).repository_id }}" \
+          -e GITHUB_REPOSITORY_NAME="${{ fromJSON(inputs.github_context).repository.name }}" \
           ghcr.io/caliptrasecurity/agent:main
