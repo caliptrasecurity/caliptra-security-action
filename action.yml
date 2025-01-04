@@ -18,9 +18,9 @@ runs:
         echo "${{ fromJSON(inputs.github_context).token }}" | docker login ghcr.io \
           -u ${{ fromJSON(inputs.github_context).actor }} --password-stdin
           
-    - name: Check Inputs
-      shell: bash
-      run: echo "${{ toJSON(fromJSON(inputs.github_context)) }}"
+    # - name: Check Inputs
+    #   shell: bash
+    #   run: echo "${{ toJSON(fromJSON(inputs.github_context)) }}"
 
     - name: Pull scanner image
       shell: bash
